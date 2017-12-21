@@ -87,6 +87,7 @@
 #define MICROPY_PY_UCTYPES                          (1)
 #define MICROPY_PY_UHASHLIB                         (0)
 #define MICROPY_PY_UHASHLIB_SHA1                    (0)
+#define MICROPY_PY_UTIMEQ                           (1)
 #define MICROPY_PY_UJSON                            (1)
 #define MICROPY_PY_URE                              (1)
 #define MICROPY_PY_MACHINE                          (1)
