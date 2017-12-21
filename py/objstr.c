@@ -231,7 +231,8 @@ STATIC mp_obj_t bytes_make_new(const mp_obj_type_t *type_in, size_t n_args, size
         vstr_init(&vstr, len);
     }
 
-    mp_obj_t iterable = mp_getiter(args[0]);
+    mp_obj_iter_buf_t iter_buf;
+    mp_obj_t iterable = mp_getiter(args[0], &iter_buf);
     mp_obj_t item;
     while ((item = mp_iternext(iterable)) != MP_OBJ_STOP_ITERATION) {
         mp_int_t val = mp_obj_get_int(item);

@@ -43,7 +43,7 @@ STATIC mp_obj_t zip_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_
     o->base.type = type;
     o->n_iters = n_args;
     for (mp_uint_t i = 0; i < n_args; i++) {
-        o->iters[i] = mp_getiter(args[i]);
+        o->iters[i] = mp_getiter(args[i], NULL);
     }
     return MP_OBJ_FROM_PTR(o);
 }

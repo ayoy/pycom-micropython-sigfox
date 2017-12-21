@@ -136,6 +136,7 @@ PY_O_BASENAME = \
 	emitglue.o \
 	runtime.o \
 	runtime_utils.o \
+	scheduler.o \
 	nativeglue.o \
 	stackctrl.o \
 	argcheck.o \
@@ -220,6 +221,7 @@ PY_O_BASENAME = \
 	../extmod/modussl_axtls.o \
 	../extmod/modussl_mbedtls.o \
 	../extmod/modurandom.o \
+	../extmod/moduselect.o \
 	../extmod/modwebsocket.o \
 	../extmod/modwebrepl.o \
 	../extmod/modframebuf.o \

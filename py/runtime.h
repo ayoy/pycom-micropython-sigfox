@@ -64,6 +64,9 @@ extern const qstr mp_binary_op_method_name[];
 void mp_init(void);
 void mp_deinit(void);
 
+void mp_handle_pending(void);
+void mp_handle_pending_tail(mp_uint_t atomic_state);
+
 // extra printing method specifically for mp_obj_t's which are integral type
 int mp_print_mp_int(const mp_print_t *print, mp_obj_t x, int base, int base_char, int flags, char fill, int width, int prec);
 
@@ -122,7 +125,7 @@ void mp_load_method(mp_obj_t base, qstr attr, mp_obj_t *dest);
 void mp_load_method_maybe(mp_obj_t base, qstr attr, mp_obj_t *dest);
 void mp_store_attr(mp_obj_t base, qstr attr, mp_obj_t val);
 
-mp_obj_t mp_getiter(mp_obj_t o);
+mp_obj_t mp_getiter(mp_obj_t o_in, mp_obj_iter_buf_t *iter_buf);
 mp_obj_t mp_iternext_allow_raise(mp_obj_t o); // may return MP_OBJ_STOP_ITERATION instead of raising StopIteration()
 mp_obj_t mp_iternext(mp_obj_t o); // will always return MP_OBJ_STOP_ITERATION instead of raising StopIteration(...)
 mp_vm_return_kind_t mp_resume(mp_obj_t self_in, mp_obj_t send_value, mp_obj_t throw_value, mp_obj_t *ret_val);

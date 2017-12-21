@@ -60,7 +60,7 @@ STATIC void list_print(const mp_print_t *print, mp_obj_t o_in, mp_print_kind_t k
 }
 
 STATIC mp_obj_t list_extend_from_iter(mp_obj_t list, mp_obj_t iterable) {
-    mp_obj_t iter = mp_getiter(iterable);
+    mp_obj_t iter = mp_getiter(iterable, NULL);
     mp_obj_t item;
     while ((item = mp_iternext(iter)) != MP_OBJ_STOP_ITERATION) {
         mp_obj_list_append(list, item);

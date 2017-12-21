@@ -723,8 +723,26 @@ unwind_jump:;
 
                 ENTRY(MP_BC_GET_ITER):
                     MARK_EXC_IP_SELECTIVE();
-                    SET_TOP(mp_getiter(TOP()));
+                    SET_TOP(mp_getiter(TOP(), NULL));
                     DISPATCH();
+
+                // // An iterator for a for-loop takes MP_OBJ_ITER_BUF_NSLOTS slots on
+                // // the Python value stack.  These slots are either used to store the
+                // // iterator object itself, or the first slot is MP_OBJ_NULL and
+                // // the second slot holds a reference to the iterator object.
+                // ENTRY(MP_BC_GET_ITER_STACK): {
+                //     MARK_EXC_IP_SELECTIVE();
+                //     mp_obj_t obj = TOP();
+                //     mp_obj_iter_buf_t *iter_buf = (mp_obj_iter_buf_t*)sp;
+                //     sp += MP_OBJ_ITER_BUF_NSLOTS - 1;
+                //     obj = mp_getiter(obj, iter_buf);
+                //     if (obj != MP_OBJ_FROM_PTR(iter_buf)) {
+                //         // Iterator didn't use the stack so indicate that with MP_OBJ_NULL.
+                //         sp[-MP_OBJ_ITER_BUF_NSLOTS + 1] = MP_OBJ_NULL;
+                //         sp[-MP_OBJ_ITER_BUF_NSLOTS + 2] = obj;
+                //     }
+                //     DISPATCH();
+                // }
 
                 ENTRY(MP_BC_FOR_ITER): {
                     MARK_EXC_IP_SELECTIVE();

@@ -84,6 +84,7 @@
 #define MICROPY_PY_SYS_STDFILES                     (1)
 #define MICROPY_PY_UBINASCII                        (1)
 #define MICROPY_PY_UERRNO                           (1)
+#define MICROPY_PY_USELECT                          (1)
 #define MICROPY_PY_UCTYPES                          (1)
 #define MICROPY_PY_UHASHLIB                         (0)
 #define MICROPY_PY_UHASHLIB_SHA1                    (0)
@@ -191,6 +192,7 @@ extern const struct _mp_obj_module_t mp_module_ussl;
     { MP_OBJ_NEW_QSTR(MP_QSTR_binascii),        (mp_obj_t)&mp_module_ubinascii }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_struct),          (mp_obj_t)&mp_module_ustruct },   \
     { MP_OBJ_NEW_QSTR(MP_QSTR_re),              (mp_obj_t)&mp_module_ure },       \
+    { MP_OBJ_NEW_QSTR(MP_QSTR_select),          (mp_obj_t)&mp_module_uselect },   \
     { MP_OBJ_NEW_QSTR(MP_QSTR_json),            (mp_obj_t)&mp_module_ujson },     \
     { MP_OBJ_NEW_QSTR(MP_QSTR_time),            (mp_obj_t)&utime_module },        \
     { MP_OBJ_NEW_QSTR(MP_QSTR_hashlib),         (mp_obj_t)&mp_module_uhashlib },  \
@@ -208,6 +210,23 @@ extern const struct _mp_obj_module_t mp_module_ussl;
 
 #define MICROPY_BEGIN_ATOMIC_SECTION()              portENTER_CRITICAL_NESTED()
 #define MICROPY_END_ATOMIC_SECTION(state)           portEXIT_CRITICAL_NESTED(state)
+
+#if MICROPY_PY_THREAD
+#define MICROPY_EVENT_POLL_HOOK \
+    do { \
+        extern void mp_handle_pending(void); \
+        mp_handle_pending(); \
+        MP_THREAD_GIL_EXIT(); \
+        MP_THREAD_GIL_ENTER(); \
+    } while (0);
+#else
+#define MICROPY_EVENT_POLL_HOOK \
+    do { \
+        extern void mp_handle_pending(void); \
+        mp_handle_pending(); \
+        asm("waiti 0"); \
+    } while (0);
+#endif
 
 #define MICROPY_PORT_ROOT_POINTERS \
     const char *readline_hist[8];                               \
